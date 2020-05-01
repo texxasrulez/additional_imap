@@ -16,6 +16,7 @@ select.deco {
 	.remotehint{z-index:1;
 	position:absolute;
 	top:1px;
+	margin-left:auto;
 	left:50%;
 	margin-left:-200px;
 	width:400px;
