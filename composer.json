@@ -1,0 +1,25 @@
+{
+    "name": "texxasrulez/additional_imap",
+    "type": "roundcube-plugin",
+    "description": "Add additional IMAP Accounts to your Roundcube.",
+    "homepage": "https://github.com/texxasrulez/additional_imap",
+    "license": "GPL-3.0-only",
+    "version": "0.1",
+    "authors": [
+        {
+            "name": "Gene Hawkins",
+            "email": "texxasrulez@yahoo.com",
+            "role": "Lead"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://plugins.roundcube.net"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "roundcube/plugin-installer": ">=0.1.4"
+    }
+}
