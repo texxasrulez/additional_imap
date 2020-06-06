@@ -1,13 +1,8 @@
-# Aditional IMAP Accounts #
-
-**Coming Soon**
-
-This is almost complete. Since staying at home more and keeping away from people, it has given me the time to resurrect some ancient plugins for Roundcube.  
-All I have left is converting mcrypt to openssl ...  
+# Aditional IMAP Accounts   
 
 **Check Email from an external IMAP account from within Roundcube**  
 
-Gmail Yahoo and Hotmail are preconfigured. You can add more within the config.inc.php file.  
+Gmail Yahoo and Hotmail are pre-configured. You can add more within the config.inc.php file.  
 
 upload files to `/path_to_roundcube/plugins/additional_imap`  
 
