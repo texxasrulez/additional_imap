@@ -29,8 +29,8 @@ class additional_imap extends rcube_plugin
         if ($_ = rcube_utils::get_input_value('_switch', rcube_utils::INPUT_GET)) {
             $_SESSION['additional_imap_id'] = $_;
             if ($_ == -1) {
-                $m = array('storage_host', 'storage_ssl', 'storage_port');
-                foreach($m as $E) {
+                $imap_menu = array('storage_host', 'storage_ssl', 'storage_port');
+                foreach($imap_menu as $E) {
                     $_SESSION[$E] = $_SESSION[$E.
                         '_def'];
                 }
@@ -51,9 +51,9 @@ class additional_imap extends rcube_plugin
                 $C = 'SELECT * FROM ' . rcmail::get_instance()->db->table_name('additional_imap').
                 ' WHERE id=? AND user_id=?';
                 $res = $rcmail->db->query($C, $_, $rcmail->user->ID);
-                $k = $rcmail->db->fetch_assoc($res);
-                if (is_array($k)) {
-                    $fB = $k['server'];
+                $sql_arr = $rcmail->db->fetch_assoc($res);
+                if (is_array($sql_arr)) {
+                    $fB = $sql_arr['server'];
                     $F = parse_url($fB);
                     $KB = false;
                     if ($F['scheme'] == 'ssl' || $F['scheme'] == 'tls') {
@@ -61,10 +61,10 @@ class additional_imap extends rcube_plugin
                         $F['port'] = $F['port'] ? $F['port'] : 993;
                     }
                     $NB = $F['port'] ? $F['port'] : 143;
-                    $M = $this->decrypt($k['password'], $rcmail->decrypt($_SESSION['password']), $rcmail->config->get('additional_imap_salt', '%E`c{2;<J2F^4_&._BxfQ<5Pf3qv!m{e'));
+                    $M = $this->decrypt($sql_arr['password'], $rcmail->decrypt($_SESSION['password']), $rcmail->config->get('additional_imap_salt', '%E`c{2;<J2F^4_&._BxfQ<5Pf3qv!m{e'));
                     $c = $F['scheme'] ? $F['scheme'] : false;
                     $j = $F['host'] ? $F['host'] : $F['path'];
-                    if ($this->test_connection($k['username'], $M, $j, $NB, $c)) {
+                    if ($this->test_connection($sql_arr['username'], $M, $j, $NB, $c)) {
                         if ($rcmail->config->get('additional_imap_cache')) {
                             $x = array('cache', 'cache_index', 'cache_messages', 'cache_shared', 'cache_thread');
                             $W = asciiwords($j, true, '_');
@@ -103,7 +103,7 @@ class additional_imap extends rcube_plugin
                         $_SESSION['storage_ssl'] = $KB;
                         if ($_SESSION['username'] == $rcmail->user->data['username']) $_SESSION['storage_port_sav'] = $_SESSION['storage_port'];
                         $_SESSION['storage_port'] = $NB;
-                        $_SESSION['username'] = $k['username'];
+                        $_SESSION['username'] = $sql_arr['username'];
                         $_SESSION['password'] = $rcmail->encrypt($M);
                         $BB = $_SESSION;
                         foreach($BB as $E => $L) {
@@ -395,7 +395,7 @@ class additional_imap extends rcube_plugin
                 $K = $args['username'];
                 $T = $args['password'];
                 $h = $args['label'];
-                $mB = $args['enabled'] ? true : false;
+                $imap_menu_B = $args['enabled'] ? true : false;
                 $I = unserialize($args['preferences']);
                 if (is_array($I)) {
                     $I = $I['imap_delimiter'];
@@ -516,7 +516,7 @@ class additional_imap extends rcube_plugin
                 $B['record']['additional_imap.label'] = $h;
                 $B['record']['additional_imap.imapserver'] = $sql;
                 $B['record']['additional_imap.imapuser'] = $K;
-                $B['record']['additional_imap.enabled'] = $mB;
+                $B['record']['additional_imap.enabled'] = $imap_menu_B;
                 $B['record']['additional_imap.delimiter'] = $I;
             }
         }
