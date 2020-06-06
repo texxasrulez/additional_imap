@@ -2,7 +2,7 @@
 
 **Check Email from an external IMAP account from within Roundcube**  
 
-Gmail Yahoo and Hotmail are pre-configured. You can add more within the config.inc.php file.  
+Gmail & Yahoo are pre-configured. You can add more within the config.inc.php file.  
 
 upload files to `/path_to_roundcube/plugins/additional_imap`  
 
