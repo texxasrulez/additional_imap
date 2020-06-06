@@ -2,7 +2,7 @@
 
 **Check Email from an external IMAP account from within Roundcube**  
 
-Gmail & Yahoo are pre-configured. You can add more within the config.inc.php file.  
+Gmail & Yahoo are pre-configured. You can add more within the config.inc.php file if required to auto configure.  
 
 upload files to `/path_to_roundcube/plugins/additional_imap`  
 
@@ -15,6 +15,7 @@ Enable plugin via config.inc.php with
 `$config['plugins'] = array('additional_imap');`
 
 Enable from Settings - Identities Tab  
+Add a new identity with an email address, enable imap enter ssl://subdomain.domain.ltd:993 for that service and save settings.
 
 
 Screenshots
