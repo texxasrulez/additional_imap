@@ -3,28 +3,29 @@
  ***************************************************************************/
 
 #accounts {
-	position:absolute;
-	top:63px;
-	left:18px;
+	position: absolute;
+	top: 63px;
+	left: 18px;
 }
  
 .remotehint {
-	 z-index:-1;
-	 position:absolute;
-	 top:7px;
-	 margin-left:auto;
-	 left:210px;
-	 width:400px;
-	 border-radius:5px;
-	 padding:4px;
-	 -moz-border-radius:5px;
-	 border:1px solid #DEEEFC;
-	 background:#F2F9FF;
-	 text-align:center;
-	 color:#3F70BA;
-	 display:inline;
+	 z-index: -1;
+	 position: absolute;
+	 top: 4px;
+	 margin-left: auto;
+	 left: 300px;
+	 width: 400px;
+	 border-radius: 5px;
+	 padding: 4px;
+	 -moz-border-radius: 5px;
+	 border: 2px solid #24d324;
+	 background: #fff900;
+	 font-weight: bold;
+	 text-align: center;
+	 color: #ff0000;
+	 display: inline;
 	 }
 	 
 .classic {
-	top:2px;
+	top: 2px;
 	}
