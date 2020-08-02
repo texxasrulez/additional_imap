@@ -1,3 +1,11 @@
+/*
+ * Roundcube Additional IMAP Schema
+ *
+ * @author Gene Hawkins <texxasrulez@yahoo.com>
+ *
+ * @licence GNU AGPL
+ */
+
 CREATE TABLE IF NOT EXISTS `additional_imap` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -11,8 +19,7 @@ CREATE TABLE IF NOT EXISTS `additional_imap` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `iid` (`iid`)
-  )
-ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT=1 */;
 
 ALTER TABLE `additional_imap`
   ADD CONSTRAINT `additional_imap_ibfk_2` FOREIGN KEY (`iid`) REFERENCES `identities` (`identity_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -24,13 +31,13 @@ CREATE TABLE IF NOT EXISTS `additional_imap_hosts` (
   `host` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `ts` datetime NOT NULL,
   PRIMARY KEY (`id`)
-  )
-ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT=1 */;
 
 CREATE TABLE IF NOT EXISTS `cache_tables` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `suffix` varchar(255) NOT NULL,
   `ts` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-  )
-ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT=1 */;
+
+REPLACE INTO `system` (`name`, `value`) VALUES ('tx-additional-imap-version', '2020080200');

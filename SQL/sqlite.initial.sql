@@ -1,3 +1,11 @@
+/*
+ * Roundcube Additional IMAP Schema
+ *
+ * @author Gene Hawkins <texxasrulez@yahoo.com>
+ *
+ * @licence GNU AGPL
+ */
+
 CREATE TABLE IF NOT EXISTS 'additional_imap' (
   'id' INTEGER NOT NULL PRIMARY KEY ASC,
   'user_id' int(10) NOT NULL,
