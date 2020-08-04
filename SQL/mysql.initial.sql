@@ -40,4 +40,4 @@ CREATE TABLE IF NOT EXISTS `cache_tables` (
   PRIMARY KEY (`id`)
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT=1 */;
 
-REPLACE INTO `system` (`name`, `value`) VALUES ('tx-additional-imap-version', '2020080200');
+REPLACE INTO `system` (`name`, `value`) VALUES ('additional_imap-version', '2020080200');
