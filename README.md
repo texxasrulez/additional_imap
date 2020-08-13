@@ -1,9 +1,30 @@
 # Aditional IMAP Accounts   
 
-**Check Email from an external IMAP account from within Roundcube**  
+**Check Email from an external IMAP account from within Roundcube**   
 
-Gmail & Yahoo are pre-configured. You can add more within the config.inc.php file if required to auto configure.  
+Supported Webmail Providers "out of the box"  
 
+* gmail.com  
+* googlemail.com  
+* yahoo.com    
+* hotmail.com    
+* live.com    
+* outlook.com    
+* aol.com    
+* gmx.com    
+* icloud.com    
+* yandex.com  
+  
+If you would like more, just give me the url of the webmail provider and I will add it if able to.  
+
+**Installation**  
+Easy Way (Recommended)  
+`composer require texxasrulez/additional_imap`  
+Composer does its thang, puts files where they need to be, injects SQL schema, adds plugin to main RC config.inc.php  
+and creates config.inc.php in plugin/additional_imap directory.  
+You just need to edit config.inc.php file if needed to suit your individual needs.  
+
+Not as Easy (Old School)
 upload files to `/path_to_roundcube/plugins/additional_imap`  
 
 Import SQL schema to your database located in the SQL directory of this repo.  
@@ -15,8 +36,7 @@ Enable plugin via config.inc.php with
 `$config['plugins'] = array('additional_imap');`
 
 Enable from Settings - Identities Tab  
-Add a new identity with an email address, enable imap enter ssl://subdomain.domain.ltd:993 for that service and save settings.
-
+Add a new identity with your webmail provided email address, fill in username and password, check that box to enable, save. Done!  
 
 Screenshots
 -----------

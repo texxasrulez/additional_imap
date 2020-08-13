@@ -19,7 +19,7 @@ $config['additional_imap_external'] = array(
     'trash_mbox' => '[Google Mail]/Trash',
     'archive_mbox' => '[Google Mail]/Archive',
     'default_folders' => array('INBOX', '[Google Mail]/Archive', '[Google Mail]/Drafts', '[Google Mail]/Spam', '[Google Mail]/Sent Mail', '[Google Mail]/Trash'),
-    'readonly' => true, // on match prevent field editing
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
   ),
   'yahoo.com' => array(
     'host' =>'ssl://imap.mail.yahoo.com:993',
@@ -29,12 +29,82 @@ $config['additional_imap_external'] = array(
     'sent_mbox' => 'INBOX/Sent',
     'trash_mbox' => 'INBOX/Trash',
     'default_folders' => array('INBOX'),
-    'readonly' => true, // on match prevent field editing
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'hotmail.com' => array(
+    'host' =>'ssl://imap-mail.outlook.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'live.com' => array(
+    'host' =>'ssl://imap-mail.outlook.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'outlook.com' => array(
+    'host' =>'ssl://imap-mail.outlook.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'aol.com' => array(
+    'host' =>'ssl://export.imap.aol.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'gmx.com' => array(
+    'host' =>'ssl://imap.gmx.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'icloud.com' => array(
+    'host' =>'ssl://imap.mail.me.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
+  ),
+  'yandex.com' => array(
+    'host' =>'ssl://imap.yandex.com:993',
+    'delimiter' => '/',
+    'drafts_mbox' => 'INBOX/Drafts',
+    'junk_mbox' => 'INBOX/Spam',
+    'sent_mbox' => 'INBOX/Sent',
+    'trash_mbox' => 'INBOX/Trash',
+    'default_folders' => array('INBOX'),
+    'readonly' => true, // This prevents field editing & does not make your remote email "Read Only"
   ),
 );
 
 /* auto-detect IMAP server */
-$config['additional_imap_autodetect'] = false;
+$config['additional_imap_autodetect'] = true;
 
 /* Cache remote accounts
    NOTE: if you enable this option your database user must have permissions to CREATE and DROP database tables */
