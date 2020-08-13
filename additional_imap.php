@@ -25,6 +25,11 @@ class additional_imap extends rcube_plugin
     }
 
     function switch_account() {
+		
+	// encrypted with your Roundcube user password using RC's default des_key
+        $rcmail = rcmail::get_instance();
+        $rc_des_key = self::getDesKey();
+		
         $rcmail = $this->rcmail;
         if ($_ = rcube_utils::get_input_value('_switch', rcube_utils::INPUT_GET)) {
             $_SESSION['additional_imap_id'] = $_;
@@ -724,5 +729,93 @@ class additional_imap extends rcube_plugin
                 }
             }
         }
+    }
+	
+	// password helpers
+    private static function getDesKey(): string
+    {
+        $rcmail = rcmail::get_instance();
+        $imap_password = $rcmail->decrypt($_SESSION['password']);
+        while (strlen($imap_password) < 24) {
+            $imap_password .= $imap_password;
+        }
+        return substr($imap_password, 0, 24);
+    }
+
+    public static function encryptPassword(string $clear): string
+    {
+        $scheme = self::$pwstore_scheme;
+
+        if (strcasecmp($scheme, 'plain') === 0) {
+            return $clear;
+        }
+
+        if (strcasecmp($scheme, 'encrypted') === 0) {
+            if (empty($_SESSION['password'])) { // no key for encryption available, downgrade to DES_KEY
+                $scheme = 'des_key';
+            } else {
+                // encrypted with IMAP password
+                $rcmail = rcmail::get_instance();
+
+                $imap_password = self::getDesKey();
+                $deskey_backup = $rcmail->config->set('additional_imap_salt', $imap_password);
+
+                $crypted = $rcmail->encrypt($clear, 'additional_imap_salt');
+
+                // there seems to be no way to unset a preference
+                $deskey_backup = $rcmail->config->set('additional_imap_salt', '');
+
+                return '{ENCRYPTED}' . $crypted;
+            }
+        }
+
+        if (strcasecmp($scheme, 'des_key') === 0) {
+            // encrypted with global des_key
+            $rcmail = rcmail::get_instance();
+            $crypted = $rcmail->encrypt($clear);
+            return '{DES_KEY}' . $crypted;
+        }
+
+        // default: base64-coded password
+        return '{BASE64}' . base64_encode($clear);
+    }
+
+    public static function decryptPassword(string $crypt): string
+    {
+        if (strpos($crypt, '{ENCRYPTED}') === 0) {
+            // return empty password if decruption key not available
+            if (empty($_SESSION['password'])) {
+                self::$logger->warning("Cannot decrypt password as now session password is available");
+                return "";
+            }
+
+            $crypt = substr($crypt, strlen('{ENCRYPTED}'));
+            $rcmail = rcmail::get_instance();
+
+            $imap_password = self::getDesKey();
+            $deskey_backup = $rcmail->config->set('additional_imap_salt', $imap_password);
+
+            $clear = $rcmail->decrypt($crypt, 'additional_imap_salt');
+
+            // there seems to be no way to unset a preference
+            $deskey_backup = $rcmail->config->set('additional_imap_salt', '');
+
+            return $clear;
+        }
+
+        if (strpos($crypt, '{DES_KEY}') === 0) {
+            $crypt = substr($crypt, strlen('{DES_KEY}'));
+            $rcmail = rcmail::get_instance();
+
+            return $rcmail->decrypt($crypt);
+        }
+
+        if (strpos($crypt, '{BASE64}') === 0) {
+            $crypt = substr($crypt, strlen('{BASE64}'));
+            return base64_decode($crypt);
+        }
+
+        // unknown scheme, assume cleartext
+        return $crypt;
     }
 }

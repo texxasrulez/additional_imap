@@ -6,7 +6,7 @@
 $config['additional_imap_crypt'] = 'rcmail';
 
 /* password encryption salt (only used for secure encryption) */
-$config['additional_imap_salt'] = '!!!!Random_1_2_4_5_6_String!!!!';
+// $config['additional_imap_salt'] = 'Utilizes RC Default des_key generated at installation';
 
 /* predefined imap hosts (associated with the domain part of the identity email property) */
 $config['additional_imap_external'] = array(
