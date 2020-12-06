@@ -437,6 +437,8 @@ class additional_imap extends rcube_plugin
                             $I = $V['delimiter'];
                             $q = 'readonly';
                         }
+                    } else if ($rcmail->config->get('additional_imap_limit_hosts', false)) {
+                        return;
                     } else {
                         $C = 'SELECT * FROM ' . rcmail::get_instance()->db->table_name('additional_imap_hosts').
                         ' WHERE domain=?';
