@@ -7,6 +7,12 @@ class additional_imap extends rcube_plugin
     function init() {
         $this->rcmail = rcmail::get_instance();
         $this->load_config();
+
+        $limit_users = $this->rcmail->config->get('additional_imap_limit_users', false);
+        if (is_array($limit_users) && !in_array($this->rcmail->user->data['username'], $limit_users)) {
+            return;
+        }
+
         $this->register_action('plugin.additional_imap', array($this, 'switch_account'));
         $this->register_action('plugin.additional_imap_uninstall', array($this, 'uninstall'));
         $this->add_hook('startup', array($this, 'startup'));
