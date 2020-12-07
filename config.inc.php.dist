@@ -106,6 +106,9 @@ $config['additional_imap_external'] = array(
 /* auto-detect IMAP server */
 $config['additional_imap_autodetect'] = true;
 
+/* Limit plugin access to those configured here. Accepts an array with usernames. */
+$config['additional_imap_limit_users'] = false;
+
 /* Cache remote accounts
    NOTE: if you enable this option your database user must have permissions to CREATE and DROP database tables */
 $config['additional_imap_cache'] = false;
