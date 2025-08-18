@@ -1,23 +1,22 @@
-// Additional IMAP Plugin Language File
-
 <?php
-$labels=array();
-$labels['pluginname']='Externí IMAPové účty';
-$labels['plugindescription']='Umožní přiřadit další externí IMAPové účty k danému lokálnímu účtu.';
-$labels['imap']='IMAP';
-$labels['enabled']='Povolen (výchozí)';
-$labels['imapserver']='IMAP server';
-$labels['imapuser']='Uživatelské jméno';
-$labels['imappass']='Heslo';
-$labels['delimiter']='Oddělovač složek';
-$labels['dot']='tečka';
-$labels['slash']='lomítko';
-$labels['backslash']='zpětné lomítko';
-$labels['label']='Popisek';
-$labels['isset']='Heslo je již uloženo';
-$labels['isnotset']='Zadejte prosím heslo';
-$labels['browsingremoteaccount']='PROCHÁZET VZDÁLENÝ ÚČET ~ ';
-$labels['connectionfailed']='Nepodařilo se navázat připojení k IMAP serveru.';
-$labels['googlecaptchahint']='Přidáváte-li účet Google do svého webmailu a Google zablokuje vaši žádost, tak si prosím zkontrolujte své údaje (uživatelské jméno/heslo). Pokud jste přesvědčeni, že vaše přihlašovací údaje jsou správné, klikněte prosím %s a postupujte podle pokynů společnosti Google tak abyste získali přístup z webmailu k vašemu Google účtu.';
-$labels['here']='zde';
-$labels['fe']='např.';
+$labels = array();
+$labels['pluginname'] = 'Externí účty IMAP';
+$labels['plugindescription'] = 'Přiřazení serverů IMAP k identitám účtů na úrovni jednotlivých uživatelů.';
+$labels['imap'] = 'IMAP';
+$labels['enabled'] = 'Povoleno';
+$labels['imapserver'] = 'Server IMAP';
+$labels['imapuser'] = 'Uživatelské jméno';
+$labels['imappass'] = 'Heslo';
+$labels['delimiter'] = 'Oddělovač hierarchie složek';
+$labels['dot'] = 'tečka';
+$labels['slash'] = 'slash';
+$labels['backslash'] = 'zpětné lomítko';
+$labels['label'] = 'Štítek';
+$labels['isset'] = 'Heslo je již uloženo';
+$labels['isnotset'] = 'Zadejte prosím heslo';
+$labels['browsingremoteaccount'] = 'POMOCÍ VZDÁLENÉHO ÚČTU ~';
+$labels['connectionfailed'] = 'Nepodařilo se navázat spojení se serverem IMAP.';
+$labels['googlecaptchahint'] = 'Přidáváte účet Google do své webové pošty. Společnost Google požadavek zablokovala. Zkontrolujte prosím údaje o svém účtu (uživatelské jméno/heslo). Pokud jste určitě přesvědčeni, že jsou vaše přihlašovací údaje správné, klikněte na %s a podle pokynů společnosti Google povolte přístup k webové poště k účtu Google.';
+$labels['here'] = 'zde';
+$labels['ie'] = 'tj:';
+?>

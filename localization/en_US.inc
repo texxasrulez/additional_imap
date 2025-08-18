@@ -1,5 +1,3 @@
-// Additional IMAP Plugin Language File
-
 <?php
 $labels=array();
 $labels['pluginname']='External IMAP Accounts';

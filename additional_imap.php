@@ -132,12 +132,12 @@ class additional_imap extends rcube_plugin
 
     function startup($B) {
         if ($B['task'] == 'mail' || $B['task'] == 'settings') {
-            if (!$_SESSION['storage_host_def']) {
-                $_SESSION['storage_host_def'] = $_SESSION['storage_host'];
-                $_SESSION['storage_ssl_def'] = $_SESSION['storage_ssl'];
-                $_SESSION['storage_port_def'] = $_SESSION['storage_port'];
-                $_SESSION['imap_delimiter_def'] = $_SESSION['imap_delimiter'];
-                $_SESSION['default_account_password'] = $_SESSION['password'];
+            if (empty($_SESSION['storage_host_def'])) {
+				$_SESSION['storage_host_def']      		= $_SESSION['storage_host']     ?? null;
+				$_SESSION['storage_ssl_def']       		= $_SESSION['storage_ssl']      ?? null;
+				$_SESSION['storage_port_def']      		= $_SESSION['storage_port']     ?? null;
+				$_SESSION['imap_delimiter_def']    		= $_SESSION['imap_delimiter']   ?? null;
+				$_SESSION['default_account_password'] 	= $_SESSION['password']       	?? null;
             }
             if (strtolower($this->rcmail->user->data['username']) != strtolower($_SESSION['username'])) {
                 if ($B['task'] == 'mail') {
@@ -217,7 +217,7 @@ class additional_imap extends rcube_plugin
 
     function render_page($args) {
         $this->include_script('additional_imap.js');
-        if (rcube_utils::get_input_value('_framed', rcube_utils::INPUT_GPC) || $_SESSION['impersonate']) {
+        if (rcube_utils::get_input_value('_framed', rcube_utils::INPUT_GPC) || !empty($_SESSION['impersonate'])) {
             return $args;
         }
         $rcmail = $this->rcmail;
@@ -391,7 +391,7 @@ class additional_imap extends rcube_plugin
             $this->add_texts('localization/', true);
             $C = 'SELECT * from ' . rcmail::get_instance()->db->table_name('additional_imap').
             ' WHERE iid=? AND user_id=?';
-            $res = $rcmail->db->limitquery($C, 0, 1, $B['record']['identity_id'], $rcmail->user->ID);
+            $res = $rcmail->db->limitquery($C, 0, 1, $B['record']['identity_id'] ?? null, $rcmail->user->ID);
             $data = 'data';
             $q = 'data';
             $g = true;
