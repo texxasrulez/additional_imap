@@ -1,5 +1,6 @@
 # Aditional IMAP Accounts
 
+![Downloads](https://img.shields.io/github/downloads/texxasrulez/additional_imap/total?style=plastic&logo=github&logoColor=white&label=Downloads&labelColor=aqua&color=blue)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/texxasrulez/additional_imap?style=plastic&logo=packagist&logoColor=white&label=Downloads&labelColor=blue&color=gold)](https://packagist.org/packages/texxasrulez/additional_imap)
 [![Packagist Version](https://img.shields.io/packagist/v/texxasrulez/additional_imap?style=plastic&logo=packagist&logoColor=white&label=Version&labelColor=blue&color=limegreen)](https://packagist.org/packages/texxasrulez/additional_imap)
 [![Github License](https://img.shields.io/github/license/texxasrulez/additional_imap?style=plastic&logo=github&label=License&labelColor=blue&color=coral)](https://github.com/texxasrulez/additional_imap/LICENSE)
