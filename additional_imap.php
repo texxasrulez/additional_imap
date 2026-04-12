@@ -1,6 +1,19 @@
 <?php
-class additional_imap extends rcube_plugin
-{
+class additional_imap extends rcube_plugin {
+    const PLUGIN_VERSION = '0.3.0';
+    const PLUGIN_INFO = array(
+        'name' => 'additional_imap',
+        'vendor' => 'Gene Hawkins',
+        'version' => self::PLUGIN_VERSION,
+        'license' => 'GPL-3.0',
+        'uri' => 'https://github.com/texxasrulez/additional_imap',
+    );
+
+    public static function info(): array
+    {
+        return self::PLUGIN_INFO;
+    }
+
     var $task = '?(?!login|logout).*';
     private $rcmail;
 

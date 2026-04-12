@@ -70,3 +70,14 @@ No Zelle in your banks mobile app, no problem, just click [Paypal](https://paypa
 
 I appreciate the interest in this plugin and hope all the best ...
 
+## Versioning
+- `additional_imap` now keeps its canonical version in `additional_imap::PLUGIN_VERSION` inside `additional_imap.php`.
+- `additional_imap::info()` exposes the plugin metadata array used for self-identification.
+- Development builds should use a `+dev` suffix such as `1.0.0+dev`.
+- Release builds should use a clean tagged version such as `1.0.0`.
+
+For a release bump:
+1. Update `additional_imap::PLUGIN_VERSION` in `additional_imap.php` or run `sh scripts/bump-version.sh 1.0.0`.
+2. Update `CHANGELOG.md`.
+3. Create the matching release tag after verification.
+
