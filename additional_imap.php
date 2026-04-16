@@ -1,7 +1,7 @@
 <?php
 class additional_imap extends rcube_plugin
 {
-    const PLUGIN_VERSION = '0.3.0+dev';
+    const PLUGIN_VERSION = '0.3.0';
     const PLUGIN_INFO = array(
         'name' => 'additional_imap',
         'vendor' => 'Gene Hawkins',
