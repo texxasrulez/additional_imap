@@ -1,7 +1,7 @@
 <?php
 class additional_imap extends rcube_plugin
 {
-    const PLUGIN_VERSION = '0.3.1';
+    const PLUGIN_VERSION = '0.3.0';
     const PLUGIN_INFO = array(
         'name' => 'additional_imap',
         'vendor' => 'Gene Hawkins',
@@ -101,7 +101,8 @@ class additional_imap extends rcube_plugin
                                 ' (suffix, ts) VALUES (?, ?)';
                                 $rcmail->db->query($C, $W, time());
                                 $lB = $rcmail->config->get('db_dsnw');
-                                $CB = strtolower(current(explode(':', $lB, 2)));
+                                $dsn_parts = explode(':', $lB, 2);
+                                $CB = strtolower(current($dsn_parts));
                                 $CB = self::$db_map[$CB];
                                 if ($FB = file_get_contents(INSTALL_PATH.
                                         'plugins/additional_imap/'.$CB.
@@ -159,7 +160,8 @@ class additional_imap extends rcube_plugin
                     $this->add_texts('localization/');
                     $this->rcmail->config->set('create_default_folders', false);
                 }
-                $O = strtolower(end(explode('@', $_SESSION['username'])));
+                $username_parts = explode('@', $_SESSION['username']);
+                $O = strtolower(end($username_parts));
                 $N = $this->rcmail->config->get('additional_imap_external', array());
                 if (isset($N[$O])) {
                     if ($jB = $N[$O]['default_folders']) {
@@ -345,7 +347,7 @@ class additional_imap extends rcube_plugin
 
     function config_get($B) {
         if ($B['name'] == 'keyboard_shortcuts_threads') {
-            if (is_array($_SESSION['STORAGE_THREAD'])) {
+            if (isset($_SESSION['STORAGE_THREAD']) && is_array($_SESSION['STORAGE_THREAD'])) {
                 $B['result'] = true;
             }
         }
@@ -379,7 +381,10 @@ class additional_imap extends rcube_plugin
     }
 
     function preferences_update($B) {
-        if (strtolower($_SESSION['username']) != strtolower($this->rcmail->user->data['username']) && is_array($B['prefs']['message_threading'])) {
+        $username = $_SESSION['username'] ?? $this->rcmail->user->data['username'];
+        $threading = $B['prefs']['message_threading'] ?? null;
+
+        if (strtolower($username) != strtolower($this->rcmail->user->data['username']) && is_array($threading) && !empty($_SESSION['additional_imap_id'])) {
             $C = 'SELECT * FROM ' . rcmail::get_instance()->db->table_name('additional_imap').
             ' WHERE user_id=? AND id=?';
             $res = $this->rcmail->db->limitquery($C, 0, 1, $this->rcmail->user->ID, $_SESSION['additional_imap_id']);
@@ -390,7 +395,7 @@ class additional_imap extends rcube_plugin
                 } else {
                     $u = array();
                 }
-                $u = array_merge($u, array('message_threading' => $B['prefs']['message_threading']));
+                $u = array_merge($u, array('message_threading' => $threading));
                 $C = 'UPDATE ' . rcmail::get_instance()->db->table_name('additional_imap').
                 ' SET preferences=? WHERE user_id=? AND id=?';
                 $this->rcmail->db->query($C, serialize($u), $this->rcmail->user->ID, $rc_uname['id']);
