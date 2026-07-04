@@ -1,7 +1,7 @@
 <?php
 class additional_imap extends rcube_plugin
 {
-    const PLUGIN_VERSION = '0.3.0';
+    const PLUGIN_VERSION = '0.3.2';
     const PLUGIN_INFO = array(
         'name' => 'additional_imap',
         'vendor' => 'Gene Hawkins',
@@ -57,10 +57,9 @@ class additional_imap extends rcube_plugin
                 $BB = $_SESSION;
                 foreach($BB as $E => $L) {
                     if (substr($E, 0, strlen('STORAGE')) == 'STORAGE' && substr($E, strlen($E) - 4) == '_sav') {
-                        $_SESSION[$E] = $_SESSION[$E.
-                            '_sav'];
-                        $rcmail->session->remove($E.
-                            '_sav');
+                        $storage_key = substr($E, 0, -4);
+                        $_SESSION[$storage_key] = $L;
+                        $rcmail->session->remove($E);
                     }
                 }
                 $_SESSION['username'] = $rcmail->user->data['username'];
