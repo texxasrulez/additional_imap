@@ -16,6 +16,7 @@ class additional_imap extends rcube_plugin
     }
 
     var $task = '?(?!login|logout).*';
+    public $version = self::PLUGIN_VERSION;
     private $rcmail;
 
     function init() {
@@ -685,7 +686,10 @@ class additional_imap extends rcube_plugin
         $rcmail = $this->rcmail;
 		$method = 'AES-256-CBC';
 		
-        $aB = $rcmail->user->data['user_id'];
+        $aB = $rcmail->user->ID ?? ($rcmail->user->data['user_id'] ?? null);
+        if ($aB === null) {
+            return array();
+        }
         $b = array();
         $EB = "SELECT * FROM ".rcmail::get_instance()->db->table_name('additional_imap').
         " WHERE user_id=? AND enabled=?";
@@ -704,13 +708,30 @@ class additional_imap extends rcube_plugin
     }
     private function identity_update_test($K, $T, $sql) {
         $F = parse_url($sql);
-        $j = $F['host'] ? $F['host'] : $F['path'];
-        $c = false;
-        if ($F['scheme'] == 'ssl' || $F['scheme'] == 'tls') {
-            $c = $F['scheme'];
-            $F['port'] = $F['port'] ? $F['port'] : 993;
+        if ($F === false) {
+            $this->log_imap_connection('error', 'Invalid IMAP server value during identity save', array(
+                'server' => $this->sanitize_log_value($sql),
+                'username' => $this->sanitize_log_value($K),
+            ), true);
+            return false;
         }
-        $F['port'] = $F['port'] ? $F['port'] : 143;
+
+        $j = !empty($F['host']) ? $F['host'] : ($F['path'] ?? '');
+        if ($j === '') {
+            $this->log_imap_connection('error', 'Missing IMAP host during identity save', array(
+                'server' => $this->sanitize_log_value($sql),
+                'username' => $this->sanitize_log_value($K),
+            ), true);
+            return false;
+        }
+
+        $c = false;
+        $scheme = $F['scheme'] ?? null;
+        if ($scheme == 'ssl' || $scheme == 'tls') {
+            $c = $F['scheme'];
+            $F['port'] = !empty($F['port']) ? $F['port'] : 993;
+        }
+        $F['port'] = !empty($F['port']) ? $F['port'] : 143;
         return $this->test_connection($K, $T, $j, $F['port'], $c);
     }
     private function test_connection($VB, $M, $YB, $UB, $c) {
@@ -718,9 +739,74 @@ class additional_imap extends rcube_plugin
         if (!is_object($rcmail->storage)) {
             $rcmail->storage_init();
         }
+
+        $this->log_imap_connection('debug', 'Testing IMAP connection', array(
+            'host' => $this->sanitize_log_value($YB),
+            'port' => $UB,
+            'security' => $c ?: 'none',
+            'username' => $this->sanitize_log_value($VB),
+        ));
+
         $res = $rcmail->storage->connect($YB, $VB, trim($M), $UB, $c);
+
+        if (!$res) {
+            $details = array(
+                'host' => $this->sanitize_log_value($YB),
+                'port' => $UB,
+                'security' => $c ?: 'none',
+                'username' => $this->sanitize_log_value($VB),
+            );
+
+            if (is_object($rcmail->storage)) {
+                if (method_exists($rcmail->storage, 'get_error_code')) {
+                    $details['error_code'] = $rcmail->storage->get_error_code();
+                }
+                if (method_exists($rcmail->storage, 'get_error_str')) {
+                    $details['error'] = $this->sanitize_log_value($rcmail->storage->get_error_str());
+                }
+            }
+
+            $this->log_imap_connection('error', 'Failed to establish IMAP connection', $details, true);
+        } else {
+            $this->log_imap_connection('debug', 'IMAP connection test succeeded', array(
+                'host' => $this->sanitize_log_value($YB),
+                'port' => $UB,
+                'security' => $c ?: 'none',
+                'username' => $this->sanitize_log_value($VB),
+            ));
+        }
+
         return $res;
     }
+
+    private function log_imap_connection($level, $message, $context = array(), $force = false) {
+        if (!$force && !$this->rcmail->config->get('additional_imap_debug', false)) {
+            return;
+        }
+
+        $parts = array();
+        foreach ($context as $key => $value) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+            $parts[] = $key . '=' . $value;
+        }
+
+        $line = '[' . $level . '] ' . $message;
+        if (!empty($parts)) {
+            $line .= ' (' . implode(', ', $parts) . ')';
+        }
+
+        rcube::write_log('additional_imap', $line);
+    }
+
+    private function sanitize_log_value($value) {
+        $value = (string) $value;
+        $value = preg_replace('/[\r\n\t]+/', ' ', $value);
+
+        return trim($value);
+    }
+
     private function gc($W) {
         $QB = $this->rcmail->config->get('additional_imap_gc', 100);
         $WB = mt_rand(0, $QB);
