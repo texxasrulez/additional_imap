@@ -13,7 +13,7 @@
 **Check Email from an external IMAP account from within Roundcube**   
 
 Supported Webmail Providers "out of the box"  
-* gmail.com (Tested - Works)  
+* gmail.com (Tested - Works. Does require app password from Gmail to use here not your account password)
 * googlemail.com (Un-Tested)  
 * yahoo.com (Tested - Works. Does require app password from Yahoo to use here not your account password)  
 * hotmail.com (Tested - Works)  
