@@ -1,7 +1,7 @@
 <?php
 class additional_imap extends rcube_plugin
 {
-    const PLUGIN_VERSION = '0.3.2';
+    const PLUGIN_VERSION = '0.3.3+dev';
     const PLUGIN_INFO = array(
         'name' => 'additional_imap',
         'vendor' => 'Gene Hawkins',
@@ -72,17 +72,19 @@ class additional_imap extends rcube_plugin
                 $res = $rcmail->db->query($C, $_, $rcmail->user->ID);
                 $sql_arr = $rcmail->db->fetch_assoc($res);
                 if (is_array($sql_arr)) {
-                    $fB = $sql_arr['server'];
-                    $F = parse_url($fB);
-                    $KB = false;
-                    if ($F['scheme'] == 'ssl' || $F['scheme'] == 'tls') {
-                        $KB = true;
-                        $F['port'] = $F['port'] ? $F['port'] : 993;
+                    $F = $this->parse_imap_server($sql_arr['server']);
+                    if ($F === false) {
+                        $this->log_imap_connection('error', 'Invalid IMAP server value during account switch', array(
+                            'server' => $this->sanitize_log_value($sql_arr['server']),
+                            'username' => $this->sanitize_log_value($sql_arr['username']),
+                        ), true);
+                        return;
                     }
-                    $NB = $F['port'] ? $F['port'] : 143;
+                    $KB = $F['secure'];
+                    $NB = $F['port'];
                     $M = $this->decrypt($sql_arr['password'], $rcmail->decrypt($_SESSION['password']), $rcmail->config->get('additional_imap_salt', '%E`c{2;<J2F^4_&._BxfQ<5Pf3qv!m{e'));
-                    $c = $F['scheme'] ? $F['scheme'] : false;
-                    $j = $F['host'] ? $F['host'] : $F['path'];
+                    $c = $F['security'];
+                    $j = $F['host'];
                     if ($this->test_connection($sql_arr['username'], $M, $j, $NB, $c)) {
                         if ($rcmail->config->get('additional_imap_cache')) {
                             $x = array('cache', 'cache_index', 'cache_messages', 'cache_shared', 'cache_thread');
@@ -711,7 +713,7 @@ class additional_imap extends rcube_plugin
         return $n;
     }
     private function identity_update_test($K, $T, $sql) {
-        $F = parse_url($sql);
+        $F = $this->parse_imap_server($sql);
         if ($F === false) {
             $this->log_imap_connection('error', 'Invalid IMAP server value during identity save', array(
                 'server' => $this->sanitize_log_value($sql),
@@ -720,23 +722,37 @@ class additional_imap extends rcube_plugin
             return false;
         }
 
-        $j = !empty($F['host']) ? $F['host'] : ($F['path'] ?? '');
-        if ($j === '') {
-            $this->log_imap_connection('error', 'Missing IMAP host during identity save', array(
-                'server' => $this->sanitize_log_value($sql),
-                'username' => $this->sanitize_log_value($K),
-            ), true);
+        return $this->test_connection($K, $T, $F['host'], $F['port'], $F['security']);
+    }
+
+    private function parse_imap_server($server) {
+        $F = parse_url(trim((string) $server));
+        if ($F === false) {
             return false;
         }
 
-        $c = false;
-        $scheme = $F['scheme'] ?? null;
-        if ($scheme == 'ssl' || $scheme == 'tls') {
-            $c = $F['scheme'];
-            $F['port'] = !empty($F['port']) ? $F['port'] : 993;
+        $host = !empty($F['host']) ? $F['host'] : ($F['path'] ?? '');
+        if ($host === '') {
+            return false;
         }
-        $F['port'] = !empty($F['port']) ? $F['port'] : 143;
-        return $this->test_connection($K, $T, $j, $F['port'], $c);
+
+        $scheme = !empty($F['scheme']) ? strtolower($F['scheme']) : null;
+        $port = !empty($F['port']) ? (int) $F['port'] : null;
+        $security = false;
+
+        if ($scheme == 'ssl' || $scheme == 'tls') {
+            $security = $scheme;
+            $port = $port ?: 993;
+        } elseif ($port === 993) {
+            $security = 'ssl';
+        }
+
+        return array(
+            'host' => $host,
+            'port' => $port ?: 143,
+            'security' => $security,
+            'secure' => (bool) $security,
+        );
     }
     private function test_connection($VB, $M, $YB, $UB, $c) {
         $rcmail = $this->rcmail;

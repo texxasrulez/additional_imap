@@ -47,6 +47,9 @@ Enable plugin via config.inc.php with
 Enable from Settings - Identities Tab  
 Add a new identity with your webmail provided email address, fill in username and password, check that box to enable, save. Done!  
 
+**IMAP server format**
+Use `ssl://host:993` for implicit SSL IMAP, `tls://host:143` for STARTTLS-style TLS where supported by the server, or `host:143` for plain IMAP. Bare `host:993` values are treated as implicit SSL to avoid connecting to SSL-only IMAP ports without encryption.
+
 Screenshots
 -----------
 
@@ -80,4 +83,3 @@ For a release bump:
 1. Update `additional_imap::PLUGIN_VERSION` in `additional_imap.php` or run `sh scripts/bump-version.sh 1.0.0`.
 2. Update `CHANGELOG.md`.
 3. Create the matching release tag after verification.
-
